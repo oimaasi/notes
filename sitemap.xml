@@ -3,13 +3,8 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://oimaasi.github.io/notes/posts/two/</loc>
-    <lastmod>2018-04-05T11:55:09+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://oimaasi.github.io/notes/posts/one/</loc>
-    <lastmod>2018-04-04T20:06:31+02:00</lastmod>
+    <loc>https://oimaasi.github.io/notes/post/hugo_ghpage_deployment/</loc>
+    <lastmod>2018-04-05T12:45:26+02:00</lastmod>
   </url>
   
   <url>
@@ -19,13 +14,13 @@
   
   <url>
     <loc>https://oimaasi.github.io/notes/</loc>
-    <lastmod>2018-04-05T11:55:09+02:00</lastmod>
+    <lastmod>2018-04-05T12:45:26+02:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://oimaasi.github.io/notes/posts/</loc>
-    <lastmod>2018-04-05T11:55:09+02:00</lastmod>
+    <loc>https://oimaasi.github.io/notes/post/</loc>
+    <lastmod>2018-04-05T12:45:26+02:00</lastmod>
     <priority>0</priority>
   </url>
   
