@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Oimaasi">
+    <meta name="description" content="Res severa est verum gaudium">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <base href="https://oimaasi.github.io/notes/">
+    <title>
+  Automount · Oimaasi
+</title>
+
+    <link rel="canonical" href="https://oimaasi.github.io/notes/posts/automount/">
+
+    <link  rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:400,700">
+    <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+    <link rel="stylesheet" href="https://oimaasi.github.io/notes/css/style.min.css">
+
+    <link rel="icon" type="image/png" href="https://oimaasi.github.io/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://oimaasi.github.io/images/favicon-16x16.png" sizes="16x16">
+
+    
+
+    <meta name="generator" content="Hugo 0.42.1" />
+  </head>
+
+  <body>
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://oimaasi.github.io/notes/">
+      Oimaasi
+    </a>
+    
+    <ul class="navigation-list float-right">
+      
+      <li class="navigation-item">
+        <a class="navigation-link" href="https://oimaasi.github.io/notes/posts/">Blog</a>
+      </li>
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+  <article>
+    <header>
+      <h1 class="title">Automount</h1>
+      <h2 class="date">May 3, 2018</h2>
+    </header>
+
+    
+
+<h3 id="udev-rules">Udev rules</h3>
+
+<p>We want to make sure the target hard drive is always assigned to the pre-defined block device name. First collect information about the hard drive, supposed for now current block device name is /dev/sda, and <code>idProduct</code> is the attribute with which this device can be identified.</p>
+
+<p><code>udevadm info -a /dev/sda | grep -i &quot;idProduct&quot;</code></p>
+
+<p>Then create udev rules file to let the system make a symlink whenever this device is attached. As an example, our drive has the product id <code>xxxx</code> and should be named <code>/dev/hdd1/</code> when plugged.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">file: /etc/udev/rules.d/10-automount.rules</pre></div>
+<p>ATTRS{idProduct}==&ldquo;xxxx&rdquo;, SYMLINK+=&ldquo;hdd%n&rdquo;</p>
+
+<p>Reload udev rules and restart udev. In distros using systemd, like Arch,
+<code>udevadm control --reload-rules &amp;&amp; systemctl restart systemd-udevd</code></p>
+
+<p>When running openrc, like the default setting in Gentoo,
+<code>udevadm control --reload-rules &amp;&amp; /etc/init.d/udev restart</code></p>
+
+<p>Check whether it works by replugging the drive and <code>ls -la /dev/hdd*</code>. You should see <code>/dev/hdd1</code> is linked to <code>/dev/sda1</code>.</p>
+
+<h3 id="fstab-mount-options">fstab mount options</h3>
+
+<p>While udev rules assign the block device name to our drive, fstab specifies the mount options. It will also auto mount the device as soon as the block device is available.
+Native Linux file systems like ext4 has very fine-grained ownership control. To make the life of normies easier atthis stage, especially when you are dealing non-sensitive data like music and movies on a portable external drive,let&rsquo;s format the disk to ntfs, then set <code>umask=0000</code> to save you some frustration of getting denied access to your files.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">file: /etc/fstab</pre></div>
+<h1 id="file-system-dir-type-options-dump-pass"><file system> <dir> <type> <options> <dump> <pass></h1>
+
+<p>/dev/hdd1   /mnt/hdd    ntfs-3g defaults,rw,user,nofail,x-systemd.device-timeout=1,umask=0000   0   0</p>
+
+<p><code>ntfs-3g</code> (the package need to be installed) is the fs type. <code>nofail</code> let system continue boot up even if the drive is not plugged, combined with <code>x-systemd.device-timeout=1</code> to tell the sytem to wait for only 1 second, otherwise your system boot will be delayed for 30 seconds. <code>umask=0000</code> grant all permissions to all users. It&rsquo;s dirty and risky, but half so serious for non-sensitive data and usage (i.e. consumption of multimedia contents).</p>
+
+  </article>
+</section>
+
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    © 2018 · Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Oimaasi">
+    <meta name="description" content="Res severa est verum gaudium">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <base href="https://oimaasi.github.io/notes/">
+    <title>
+  Deploying Hugo in Github Page · Oimaasi
+</title>
+
+    <link rel="canonical" href="https://oimaasi.github.io/notes/posts/hugo_ghpage_deployment/">
+
+    <link  rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:400,700">
+    <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+    <link rel="stylesheet" href="https://oimaasi.github.io/notes/css/style.min.css">
+
+    <link rel="icon" type="image/png" href="https://oimaasi.github.io/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://oimaasi.github.io/images/favicon-16x16.png" sizes="16x16">
+
+    
+
+    <meta name="generator" content="Hugo 0.42.1" />
+  </head>
+
+  <body>
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://oimaasi.github.io/notes/">
+      Oimaasi
+    </a>
+    
+    <ul class="navigation-list float-right">
+      
+      <li class="navigation-item">
+        <a class="navigation-link" href="https://oimaasi.github.io/notes/posts/">Blog</a>
+      </li>
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+  <article>
+    <header>
+      <h1 class="title">Deploying Hugo in Github Page</h1>
+      <h2 class="date">April 5, 2018</h2>
+    </header>
+
+    
+
+<h4 id="example-system-specs">Example System Specs</h4>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">* OS: Arch Linux ARM 32bit
+* WM: bspwm
+* Browser: surf
+* Text Editor: vim
+* Github username: user
+* Github repo name: mysite</pre></div>
+<p><strong>Adapt the commands below to your own system.</strong></p>
+
+<h4 id="installation-setup">Installation &amp; Setup</h4>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"># install Hugo site generator
+sudo pacman -S hugo
+
+# verify installation
+hugo version
+
+# make skeleton site &amp; setup git repo
+mkdir -p ~/sites/
+cd ~/sites
+hugo new site mysite
+cd mysite</pre></div>
+<p>From now on, unless otherwise notice, we always assume pwd=~/sites/mysite/, i.e. your own site&rsquo;s root folder.</p>
+
+<h4 id="setup-git-repo">Setup Git Repo</h4>
+
+<p>Go to <a href="www.github.com">Github</a> and create a git repository named <em>mysite</em>.
+Let&rsquo;s first setup ssh key for Github to avoid entering username and password at every remote connection.
+First generate an ssh key pair, accept default if you don&rsquo;t already have any keys at ~/.ssh/. Type your passphrase.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">ssh-keygen</pre></div>
+<p>Add the content of ~/.ssh/id_rsa.pub to Github under <em>settings -&gt; ssh and gpg keys</em> .</p>
+
+<p>Add your private ssh key to ssh-agent so that you don&rsquo;t have to type in passphrase at every remote checkout.
+eval ($ssh-agent)
+ssh-add /path/to/your/ssh_private_key</p>
+
+<p>Furthermore, we can make sure one and only one ssh-agent instance get started at every x-session by adding <code>eval ($ssh-agent)</code> to the <code>~/.xinitrc</code> file.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">git init
+git add --all
+git commit -m &#34;initial commit&#34;
+git remote add origin https://github.com/user/mysite.git
+git push -u origin master</pre></div>
+<h4 id="install-theme">Install Theme</h4>
+
+<p>Using the Elephants theme by Benny Mei as example here. Find all available themes at Hugo&rsquo;s <a href="https://themes.gohugo.io">showcase</a>.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"># download theme
+git submodule add https://gitlab.com/meibenny/elephants.git themes/elephants
+
+# creat &amp; edit a post
+hugo new post/one.md
+echo &#34;At the beginning there is light.&#34; &gt;&gt; content/post/one.md
+
+# run $ preview the generated site
+hugo server -D
+surf http://localhost:1313/</pre></div>
+<h4 id="site-configuration">Site configuration</h4>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"># ~/sites/mysite/config.toml
+baseURL = &#34;user.github.io/mysite/&#34;</pre></div>
+<h4 id="theme-customization">Theme customization</h4>
+
+<p>Before edit, copy the downloaded theme files to your own directories.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">cp -r themes/elephants/layout/\* layout/</pre></div>
+<p>Then change path to css stylesheet from absolute to relative.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"># layout/partials/header.html
+(...)
+	&lt;link rel=&#34;stylesheet&#34; href={{ &#34;css/stylesheet.css&#34; | relURL }}&gt;
+(...)</pre></div>
+<h4 id="deployment-on-github-page">Deployment on Github Page</h4>
+
+<p>Github offer free web host for static pages and it also works for Hugo. There are three different ways of deployment. The &ldquo;gh-pages branch&rdquo; method is the recommended one here. More info at <a href="https://gohugo.io/documentation/">Hugo docs</a>, section <em>Hosting &amp; deployment</em>.</p>
+
+<p>The basic idea is following: the final rendered pages are stored in the public/ folder, which in turn will be checkout to the gh-pages branch. Everything else is in the master branch. During development, we stay in the master branch, but add the gh-pages branch as worktree to the master, so that when committing changes the generated pages will also be added to the gh-pages branch.</p>
+
+<p>First exclude the public/ folder to the master branch. It is the default render folder of Hugo and the files should go to the gh-pages branch.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">echo &#34;public&#34; &gt;&gt; .gitignore</pre></div>
+<p>Then initialize the gh-pages branch.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">git checkout --orphan gh-pages
+git reset --hard
+git commit --allow-empty -m &#34;initialize gh-pages branch&#34;
+git push origin gh-pages
+git checkout master</pre></div>
+<p>The steps described above concerns initilizing the gh-pages branch. They only need to be done once. For the repetitive procedure of build and deployment, we put the neccessary steps in a script.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">touch postgh.sh
+chmod +x !$</pre></div>
+<p>Edit the script like the following.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><span style="color:#099">#!/bin/sh
+</span><span style="color:#099"></span>
+<span style="color:#069;font-weight:bold">if</span> <span style="color:#555">[[</span> <span style="color:#069;font-weight:bold">$(</span>git status -s<span style="color:#069;font-weight:bold">)</span> <span style="color:#555">]]</span>
+<span style="color:#069;font-weight:bold">then</span>
+    <span style="color:#366">echo</span> <span style="color:#c30">&#34;The working directory is dirty. Please commit any pending changes.&#34;</span>
+    <span style="color:#366">exit</span> <span style="color:#f60">1</span>;
+<span style="color:#069;font-weight:bold">fi</span>
+
+<span style="color:#366">echo</span> <span style="color:#c30">&#34;Deleting old publication&#34;</span>
+rm -rf public
+mkdir public
+git worktree prune
+rm -rf .git/worktrees/public/
+
+<span style="color:#366">echo</span> <span style="color:#c30">&#34;Checking out gh-pages branch into public&#34;</span>
+git worktree add -B gh-pages public origin/gh-pages
+
+<span style="color:#366">echo</span> <span style="color:#c30">&#34;Removing existing files&#34;</span>
+rm -rf public/*
+
+<span style="color:#366">echo</span> <span style="color:#c30">&#34;Generating site&#34;</span>
+hugo
+
+<span style="color:#366">echo</span> <span style="color:#c30">&#34;Updating gh-pages branch&#34;</span>
+<span style="color:#366">cd</span> public <span style="color:#555">&amp;&amp;</span> git add --all <span style="color:#555">&amp;&amp;</span> git commit -m <span style="color:#c30">&#34;Publishing to gh-pages&#34;</span>
+git push origin gh-pages</pre></div>
+  </article>
+</section>
+
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    © 2018 · Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>
