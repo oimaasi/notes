@@ -79,7 +79,7 @@
 
 <h3 id="fstab-mount-options">fstab mount options</h3>
 
-<p>While udev rules assign the block device name to our drive, fstab specifies the mount options. It will also auto mount the device as soon as the block device is available.
+<p>While udev rules assign the block device name to our drives, fstab specifies the mount options. It will also auto mount the device as soon as the block device is available.
 Native Linux file systems like ext4 has very fine-grained ownership control. To make the life of normies easier atthis stage, especially when you are dealing non-sensitive data like music and movies on a portable external drive,let&rsquo;s format the disk to ntfs, then set <code>umask=0000</code> to save you some frustration of getting denied access to your files.</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">file: /etc/fstab</pre></div>
 <h1 id="file-system-dir-type-options-dump-pass"><file system> <dir> <type> <options> <dump> <pass></h1>
