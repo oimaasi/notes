@@ -91,9 +91,10 @@ First generate an ssh key pair, accept default if you don&rsquo;t already have a
 <p>Add the content of ~/.ssh/id_rsa.pub to Github under <em>settings -&gt; ssh and gpg keys</em> .</p>
 
 <p>Add your private ssh key to ssh-agent so that you don&rsquo;t have to type in passphrase at every remote checkout.
-eval ($ssh-agent)
-ssh-add /path/to/your/ssh_private_key</p>
-
+Also adapte the url of git repo origin.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">eval ($ssh-agent)
+ssh-add /path/to/your/ssh_private_key
+git remote set-url origin git@github:user/mysite.git</pre></div>
 <p>Furthermore, we can make sure one and only one ssh-agent instance get started at every x-session by adding <code>eval ($ssh-agent)</code> to the <code>~/.xinitrc</code> file.</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">git init
 git add --all
