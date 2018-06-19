@@ -6,10 +6,25 @@
     <description>Recent content on Oimaasi</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 03 May 2018 12:57:51 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 03 May 2018 20:53:00 +0200</lastBuildDate>
     
 	<atom:link href="https://oimaasi.github.io/notes/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>HD Bitmap Fonts</title>
+      <link>https://oimaasi.github.io/notes/posts/hd_bitmap_fonts/</link>
+      <pubDate>Thu, 03 May 2018 20:53:00 +0200</pubDate>
+      
+      <guid>https://oimaasi.github.io/notes/posts/hd_bitmap_fonts/</guid>
+      <description>Unicode fonts and tools for X11 http://www.cl.cam.ac.uk/~mgk25/ucs-fonts.html
+Fonts in the X Window System https://www.math.utah.edu/~beebe/fonts/X-Window-System-fonts.html#Asian-language-fonts
+自家製ドットフォントシリーズ http://jikasei.me/font/jf-dotfont/
+Proposal for a GNU Unicode Fon http://www.czyborra.com/unifont/
+Unicode Tutorial http://unifoundry.com/unicode-tutorial.html
+Luc Devroye - Font Software http://luc.devroye.org/fontsoftware.html
+CJK Unifont https://freedesktop.org/wiki/Software/CJKUnifonts/</description>
+    </item>
     
     <item>
       <title>Automount</title>
