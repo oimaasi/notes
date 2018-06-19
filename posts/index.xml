@@ -43,8 +43,9 @@ Then create udev rules file to let the system make a symlink whenever this devic
       <pubDate>Thu, 05 Apr 2018 12:45:26 +0200</pubDate>
       
       <guid>https://oimaasi.github.io/notes/posts/hugo_ghpage_deployment/</guid>
-      <description>Example System Specs * OS: Arch Linux ARM 32bit * WM: bspwm * Browser: surf * Text Editor: vim * Github username: user * Github repo name: mysite Adapt the commands below to your own system.
-Installation &amp;amp; Setup # install Hugo site generator sudo pacman -S hugo # verify installation hugo version # make skeleton site &amp;amp; setup git repo mkdir -p ~/sites/ cd ~/sites hugo new site mysite cd mysite From now on, unless otherwise notice, we always assume pwd=~/sites/mysite/, i.</description>
+      <description>Hugo is a framework for creating websites. It claims to be light-weight and fast, but is in fact still pretty bloated to my taste. Any way, it seems to be one of the better one-stop solutions to make your own webpages.
+Here are the steps to deploy Hugo-generated pages for Github host.
+Example System Specs * OS: Arch Linux ARM 32bit * Browser: surf * Text Editor: vim * Github username: user * Github repo name: mysite Adapt the commands below to your own system.</description>
     </item>
     
   </channel>
